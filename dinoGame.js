@@ -1,4 +1,7 @@
 const canvas = document.getElementById('canvas')
+canvas.width = window.innerWidth // スマートフォンの画面幅に合わせる
+canvas.height = window.innerHeight // スマートフォンの画面高さに合わせる
+
 const ctx = canvas.getContext('2d')
 const imageNames = ['bird', 'cactus', 'dino']
 
@@ -108,7 +111,7 @@ function createCactus() {
 }
 
 function createBird() {
-  const birdY = Math.random() * (300 - game.image.bird.height) + 150
+  const birdY = Math.random() * (700 - game.image.bird.height) + 150
   game.enemies.push({
     x: canvas.width + game.image.bird.width / 2,
     y: birdY,
@@ -118,6 +121,14 @@ function createBird() {
     image: game.image.bird,
   })
 }
+
+document.addEventListener('touchstart', () => {
+  if (game.dino.moveY === 0) {
+    game.dino.moveY = -41
+  } else if (game.isGameOver) {
+    init()
+  }
+})
 
 document.onkeydown = (event) => {
   if (event.key === ' ' && game.dino.moveY === 0) {
@@ -195,8 +206,8 @@ function hitCheck() {
     ) {
       game.isGameOver = true
       ctx.fillStyle = 'black'
-      ctx.font = 'bold 100px serif'
-      ctx.fillText('Game Over!', 150, 200)
+      ctx.font = 'bold 30px serif'
+      ctx.fillText('Game Over!', 0, 200)
       clearInterval(game.timer)
     }
   }
